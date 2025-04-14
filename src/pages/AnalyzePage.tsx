@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -11,8 +10,9 @@ import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
+import { Resume, JobDescription, AnalysisResult } from '@/types/database';
 
-interface AnalysisResult {
+interface AnalysisResultDisplay {
   ats_score: number;
   keyword_score: number;
   formatting_score: number;
@@ -32,7 +32,7 @@ const AnalyzePage = () => {
   const [company, setCompany] = useState('');
   const [jobDescription, setJobDescription] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
+  const [analysisResult, setAnalysisResult] = useState<AnalysisResultDisplay | null>(null);
   const [resumeId, setResumeId] = useState<string | null>(null);
   const [jobDescriptionId, setJobDescriptionId] = useState<string | null>(null);
   const [isEnhancing, setIsEnhancing] = useState(false);
@@ -64,12 +64,17 @@ const AnalyzePage = () => {
       return;
     }
 
+    if (!user?.id) {
+      toast.error('You must be logged in');
+      return;
+    }
+
     setIsLoading(true);
     
     try {
       // 1. Upload resume file to Supabase Storage
       const resumeFileName = `${Date.now()}-${resumeFile.name}`;
-      const resumePath = `${user?.id}/${resumeFileName}`;
+      const resumePath = `${user.id}/${resumeFileName}`;
       
       const { error: uploadError } = await supabase.storage
         .from('resumes')
@@ -81,7 +86,7 @@ const AnalyzePage = () => {
       const { data: resumeData, error: resumeError } = await supabase
         .from('resumes')
         .insert({
-          user_id: user?.id,
+          user_id: user.id,
           name: resumeFile.name,
           file_path: resumePath,
           file_type: resumeFile.type
@@ -90,13 +95,15 @@ const AnalyzePage = () => {
         .single();
         
       if (resumeError) throw resumeError;
+      if (!resumeData) throw new Error('Failed to create resume record');
+      
       setResumeId(resumeData.id);
       
       // 3. Save job description to database
       const { data: jobData, error: jobError } = await supabase
         .from('job_descriptions')
         .insert({
-          user_id: user?.id,
+          user_id: user.id,
           title: jobTitle || 'Untitled Position',
           company: company || 'Unknown Company',
           description: jobDescription
@@ -105,6 +112,8 @@ const AnalyzePage = () => {
         .single();
         
       if (jobError) throw jobError;
+      if (!jobData) throw new Error('Failed to create job description record');
+      
       setJobDescriptionId(jobData.id);
       
       // 4. Call analyze-resume function
@@ -119,13 +128,17 @@ const AnalyzePage = () => {
       if (analysisError) throw analysisError;
       
       // 5. Save analysis results to database
-      const { data: result } = analysisData;
+      if (!analysisData || !analysisData.data) {
+        throw new Error('Analysis failed to return results');
+      }
+      
+      const result = analysisData.data;
       setAnalysisResult(result);
       
       await supabase
         .from('analysis_results')
         .insert({
-          user_id: user?.id,
+          user_id: user.id,
           resume_id: resumeData.id,
           job_description_id: jobData.id,
           ats_score: result.ats_score,
@@ -137,7 +150,7 @@ const AnalyzePage = () => {
       
       toast.success('Resume analysis completed!');
       
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error during analysis:', error);
       toast.error(error.message || 'Failed to analyze resume');
     } finally {
@@ -151,6 +164,11 @@ const AnalyzePage = () => {
       return;
     }
 
+    if (!user?.id) {
+      toast.error('You must be logged in');
+      return;
+    }
+
     setIsEnhancing(true);
     try {
       // Call enhance-resume function
@@ -159,7 +177,7 @@ const AnalyzePage = () => {
           body: {
             resumeId,
             jobDescriptionId,
-            analysisId: 'generated-id' // In a real app, we would use the actual analysis ID
+            userId: user.id
           }
         });
 
@@ -168,7 +186,7 @@ const AnalyzePage = () => {
       toast.success('Your resume has been enhanced! Check your email for the download link.');
       // In a real app, we would update the UI to show the enhanced resume or provide a download link
       
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error enhancing resume:', error);
       toast.error(error.message || 'Failed to enhance resume');
     } finally {
