@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FileText, BarChart2, PlusCircle, Facebook, Github, Linkedin, Mail, Windows } from 'lucide-react';
+import { FileText, BarChart2, PlusCircle, Facebook, Github, Linkedin, Mail } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
