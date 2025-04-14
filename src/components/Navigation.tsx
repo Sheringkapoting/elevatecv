@@ -142,7 +142,9 @@ const Navigation = () => {
               </Button>
 
               <Button variant="outline" onClick={() => handleSocialSignIn('Microsoft')} className="flex items-center justify-center gap-2">
-                <Windows className="h-5 w-5 text-blue-500" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" className="h-5 w-5 text-blue-500">
+                  <path fill="currentColor" d="M11.5 0H0v11.5h11.5V0zm12.5 0H12.5v11.5H24V0zM11.5 12.5H0V24h11.5V12.5zm12.5 0H12.5V24H24V12.5z"/>
+                </svg>
                 Continue with Microsoft
               </Button>
 
