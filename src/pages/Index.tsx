@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
-import { Upload, FileText, Briefcase, AlertCircle, CheckCircle, User } from 'lucide-react';
+import { Upload, FileText, Briefcase, AlertCircle, CheckCircle, User, BarChart2 } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
