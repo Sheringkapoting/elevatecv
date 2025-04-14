@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FileText, BarChart2, PlusCircle, Facebook, Github, Linkedin, Mail, Microsoft } from 'lucide-react';
+import { FileText, BarChart2, PlusCircle, Facebook, Github, Linkedin, Mail, Windows } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -143,7 +142,7 @@ const Navigation = () => {
               </Button>
 
               <Button variant="outline" onClick={() => handleSocialSignIn('Microsoft')} className="flex items-center justify-center gap-2">
-                <Microsoft className="h-5 w-5 text-orange-600" />
+                <Windows className="h-5 w-5 text-blue-500" />
                 Continue with Microsoft
               </Button>
 
