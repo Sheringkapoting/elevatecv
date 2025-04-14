@@ -54,3 +54,30 @@ export interface Profile {
   created_at: string;
   updated_at: string;
 }
+
+// Type guards to check if an object matches a specific interface
+export function isResume(obj: any): obj is Resume {
+  return obj && 
+    typeof obj.id === 'string' &&
+    typeof obj.user_id === 'string' &&
+    typeof obj.name === 'string' &&
+    typeof obj.file_path === 'string' &&
+    typeof obj.file_type === 'string';
+}
+
+export function isJobDescription(obj: any): obj is JobDescription {
+  return obj && 
+    typeof obj.id === 'string' &&
+    typeof obj.user_id === 'string' &&
+    typeof obj.title === 'string' &&
+    typeof obj.description === 'string';
+}
+
+export function isAnalysisResult(obj: any): obj is AnalysisResult {
+  return obj && 
+    typeof obj.id === 'string' &&
+    typeof obj.user_id === 'string' &&
+    typeof obj.resume_id === 'string' &&
+    typeof obj.job_description_id === 'string' &&
+    typeof obj.ats_score === 'number';
+}
