@@ -1,11 +1,9 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { Upload, FileText, Briefcase, AlertCircle, CheckCircle, User, BarChart2 } from 'lucide-react';
-import Navigation from '@/components/Navigation';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 
@@ -80,8 +78,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <Navigation />
-      
       <div className="container px-4 py-8 mx-auto">
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Resume Analyzer</h1>
