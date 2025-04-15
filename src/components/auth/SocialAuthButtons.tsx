@@ -2,15 +2,25 @@
 import React from 'react';
 import { Facebook, Linkedin } from 'lucide-react';
 import SocialButton from './SocialButton';
+import { toast } from 'sonner';
 
 interface SocialAuthButtonsProps {
   onSocialSignIn: (provider: string) => void;
 }
 
 const SocialAuthButtons: React.FC<SocialAuthButtonsProps> = ({ onSocialSignIn }) => {
+  const handleProviderClick = (provider: string, isAvailable: boolean) => {
+    if (isAvailable) {
+      onSocialSignIn(provider);
+    } else {
+      toast.info(`${provider} login is not available right now. It will be made available soon.`);
+    }
+  };
+
   const socialProviders = [
     {
       name: 'Google',
+      isAvailable: true,
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" className="h-5 w-5">
           <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -23,10 +33,12 @@ const SocialAuthButtons: React.FC<SocialAuthButtonsProps> = ({ onSocialSignIn })
     },
     {
       name: 'Facebook',
+      isAvailable: false,
       icon: <Facebook className="h-5 w-5 text-blue-600" />
     },
     {
       name: 'Microsoft',
+      isAvailable: false,
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" className="h-5 w-5 text-blue-500">
           <path fill="currentColor" d="M11.5 0H0v11.5h11.5V0zm12.5 0H12.5v11.5H24V0zM11.5 12.5H0V24h11.5V12.5zm12.5 0H12.5V24H24V12.5z"/>
@@ -35,6 +47,7 @@ const SocialAuthButtons: React.FC<SocialAuthButtonsProps> = ({ onSocialSignIn })
     },
     {
       name: 'LinkedIn',
+      isAvailable: true,
       icon: <Linkedin className="h-5 w-5 text-blue-700" />
     }
   ];
@@ -46,7 +59,8 @@ const SocialAuthButtons: React.FC<SocialAuthButtonsProps> = ({ onSocialSignIn })
           key={provider.name}
           provider={provider.name}
           icon={provider.icon}
-          onClick={() => onSocialSignIn(provider.name)}
+          onClick={() => handleProviderClick(provider.name, provider.isAvailable)}
+          disabled={!provider.isAvailable}
         />
       ))}
     </div>

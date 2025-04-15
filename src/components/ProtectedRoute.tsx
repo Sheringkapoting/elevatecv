@@ -2,6 +2,7 @@
 import { ReactNode, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -13,13 +14,18 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
   useEffect(() => {
     if (!loading && !user) {
-      navigate('/auth', { replace: true });
+      toast.error("You must be signed in to access this page");
+      navigate('/', { replace: true });
     }
   }, [user, loading, navigate]);
 
-  // Show nothing while checking authentication
+  // Show loading state while checking authentication
   if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-600"></div>
+      </div>
+    );
   }
 
   // Only render children if authenticated
