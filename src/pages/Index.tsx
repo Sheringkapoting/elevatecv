@@ -49,7 +49,7 @@ const Index = () => {
 
   const handleSocialSignIn = async (provider: string) => {
     try {
-      // Fix: Convert provider to lowercase and check if it's one of the supported types
+      // Convert provider to lowercase and check if it's one of the supported types
       const providerLower = provider.toLowerCase();
       
       if (providerLower === 'microsoft') {
@@ -62,8 +62,11 @@ const Index = () => {
         return;
       }
       
+      // Map LinkedIn provider to the correct OIDC version
+      const mappedProvider = providerLower === 'linkedin' ? 'linkedin_oidc' : providerLower;
+      
       // Cast the provider to the type expected by signInWithProvider
-      await signInWithProvider(providerLower as 'google' | 'linkedin' | 'facebook');
+      await signInWithProvider(mappedProvider as 'google' | 'linkedin_oidc' | 'facebook');
     } catch (error) {
       toast.error(`Failed to sign in with ${provider}`);
     }

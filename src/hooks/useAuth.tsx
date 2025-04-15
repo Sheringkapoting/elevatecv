@@ -14,7 +14,7 @@ type AuthContextType = {
     error: Error | null;
     data: any | null;
   }>;
-  signInWithProvider: (provider: 'google' | 'linkedin' | 'facebook') => Promise<void>;
+  signInWithProvider: (provider: 'google' | 'linkedin_oidc' | 'facebook') => Promise<void>;
   signOut: () => Promise<void>;
   loading: boolean;
 };
@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return response;
   };
 
-  const signInWithProvider = async (provider: 'google' | 'linkedin' | 'facebook') => {
+  const signInWithProvider = async (provider: 'google' | 'linkedin_oidc' | 'facebook') => {
     await supabase.auth.signInWithOAuth({
       provider,
       options: {

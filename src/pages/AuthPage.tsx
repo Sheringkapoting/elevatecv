@@ -55,7 +55,7 @@ const AuthPage = () => {
     }
   };
 
-  const handleProviderSignIn = async (provider: 'google' | 'linkedin' | 'facebook') => {
+  const handleProviderSignIn = async (provider: 'google' | 'linkedin_oidc' | 'facebook') => {
     try {
       await signInWithProvider(provider);
       // The redirect will happen automatically
