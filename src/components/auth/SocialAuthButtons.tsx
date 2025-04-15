@@ -11,7 +11,9 @@ interface SocialAuthButtonsProps {
 const SocialAuthButtons: React.FC<SocialAuthButtonsProps> = ({ onSocialSignIn }) => {
   const handleProviderClick = (provider: string, isAvailable: boolean) => {
     if (isAvailable) {
-      onSocialSignIn(provider);
+      // Map LinkedIn provider to the correct OIDC version when clicking the button
+      const mappedProvider = provider.toLowerCase() === 'linkedin' ? 'linkedin_oidc' : provider;
+      onSocialSignIn(mappedProvider);
     } else {
       toast.info(`${provider} login is not available right now. It will be made available soon.`);
     }

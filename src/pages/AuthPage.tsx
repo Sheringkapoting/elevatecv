@@ -128,7 +128,7 @@ const AuthPage = () => {
                   <Button
                     variant="outline"
                     type="button"
-                    onClick={() => handleProviderSignIn('linkedin')}
+                    onClick={() => handleProviderSignIn('linkedin_oidc')}
                   >
                     LinkedIn
                   </Button>
@@ -196,7 +196,7 @@ const AuthPage = () => {
                   <Button
                     variant="outline"
                     type="button"
-                    onClick={() => handleProviderSignIn('linkedin')}
+                    onClick={() => handleProviderSignIn('linkedin_oidc')}
                   >
                     LinkedIn
                   </Button>
