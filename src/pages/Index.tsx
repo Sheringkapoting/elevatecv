@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -49,7 +48,6 @@ const Index = () => {
 
   const handleSocialSignIn = async (provider: string) => {
     try {
-      // Convert provider to lowercase and check if it's one of the supported types
       const providerLower = provider.toLowerCase();
       
       if (providerLower === 'microsoft') {
@@ -62,13 +60,21 @@ const Index = () => {
         return;
       }
       
-      // Map LinkedIn provider to the correct OIDC version
       const mappedProvider = providerLower === 'linkedin' ? 'linkedin_oidc' : providerLower;
       
-      // Cast the provider to the type expected by signInWithProvider
       await signInWithProvider(mappedProvider as 'google' | 'linkedin_oidc' | 'facebook');
     } catch (error) {
       toast.error(`Failed to sign in with ${provider}`);
+    }
+  };
+
+  const handleResumeBuilderClick = () => {
+    if (user) {
+      navigate('/builder');
+    } else {
+      toast.info('Please sign in to access the Resume Builder');
+      setIsSignUp(false);
+      setAuthOpen(true);
     }
   };
 
@@ -135,9 +141,9 @@ const Index = () => {
                 <Button 
                   variant="outline" 
                   size="lg"
-                  onClick={() => handleOpenAuth(true)}
+                  onClick={handleResumeBuilderClick}
                 >
-                  Create Account
+                  Resume Builder
                 </Button>
               </motion.div>
             </div>
@@ -146,7 +152,7 @@ const Index = () => {
                 initial={{ opacity: 0, scale: 0.8 }} 
                 animate={{ opacity: 1, scale: 1 }} 
                 transition={{ duration: 0.5, delay: 0.3 }}
-                src="https://framerusercontent.com/images/oR1rBj4R4GIzrnsTClCQXreSE.png" 
+                src="/lovable-uploads/c1515feb-0f37-4c88-af92-071751b7c936.png" 
                 alt="Resume Builder" 
                 className="w-full h-auto rounded-lg shadow-xl"
               />
