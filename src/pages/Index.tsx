@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { ArrowRight, BarChart2, FileText, PlusCircle, Shield, Wrench, ChevronRight, Award, RefreshCcw } from 'lucide-react';
+import { ArrowRight, BarChart2, FileText, PlusCircle, Shield, Tool, ChevronRight, Award, RefreshCcw } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import SignInModal from '@/components/auth/SignInModal';
@@ -88,7 +87,7 @@ const Index = () => {
     { 
       title: "ATS Optimization", 
       description: "Ensure your resume passes Applicant Tracking Systems with our specialized keyword optimization tools", 
-      icon: <Wrench className="text-brand-500 h-8 w-8" /> 
+      icon: <Tool className="text-brand-500 h-8 w-8" /> 
     },
     { 
       title: "Industry Insights", 
