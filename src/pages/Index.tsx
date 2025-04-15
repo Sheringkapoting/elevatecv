@@ -2,15 +2,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import AuthDialog from '@/components/auth/AuthDialog';
 import { motion } from 'framer-motion';
 import { ArrowRight, BarChart2, FileText, PlusCircle, Shield } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import SignInModal from '@/components/auth/SignInModal';
+import CreateAccountModal from '@/components/auth/CreateAccountModal';
 
 const Index = () => {
-  const [authOpen, setAuthOpen] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [signInOpen, setSignInOpen] = useState(false);
+  const [createAccountOpen, setCreateAccountOpen] = useState(false);
   const { user, signIn, signUp, signInWithProvider } = useAuth();
   const navigate = useNavigate();
 
@@ -20,30 +21,39 @@ const Index = () => {
     }
   }, [user, navigate]);
 
-  const handleOpenAuth = (signup = false) => {
-    setIsSignUp(signup);
-    setAuthOpen(true);
+  const handleOpenSignIn = () => {
+    setCreateAccountOpen(false);
+    setSignInOpen(true);
   };
 
-  const handleCloseAuth = () => {
-    setAuthOpen(false);
+  const handleOpenCreateAccount = () => {
+    setSignInOpen(false);
+    setCreateAccountOpen(true);
   };
 
-  const handleFormSubmit = async (data: { email: string; password: string }) => {
+  const handleSignIn = async (data: { email: string; password: string }) => {
     try {
-      const { error } = isSignUp 
-        ? await signUp(data.email, data.password)
-        : await signIn(data.email, data.password);
+      const { error } = await signIn(data.email, data.password);
       
       if (error) throw error;
       
-      toast.success(isSignUp 
-        ? "Account created! Please check your email for verification." 
-        : "Signed in successfully!"
-      );
-      setAuthOpen(false);
+      toast.success("Signed in successfully!");
+      setSignInOpen(false);
     } catch (error) {
-      toast.error(error.message || (isSignUp ? "Failed to create account" : "Sign in failed"));
+      toast.error(error.message || "Sign in failed");
+    }
+  };
+
+  const handleSignUp = async (data: { fullName: string; email: string; password: string }) => {
+    try {
+      const { error } = await signUp(data.email, data.password, { full_name: data.fullName });
+      
+      if (error) throw error;
+      
+      toast.success("Account created! Please check your email for verification.");
+      setCreateAccountOpen(false);
+    } catch (error) {
+      toast.error(error.message || "Failed to create account");
     }
   };
 
@@ -70,6 +80,11 @@ const Index = () => {
     } catch (error) {
       toast.error(`Failed to sign in with ${provider}`);
     }
+  };
+
+  const handleForgotPassword = () => {
+    // Implement forgot password functionality
+    toast.info("Forgot password functionality will be implemented soon.");
   };
 
   const features = [
@@ -127,7 +142,7 @@ const Index = () => {
                 <Button 
                   variant="brand" 
                   size="lg" 
-                  onClick={() => handleOpenAuth(false)}
+                  onClick={handleOpenSignIn}
                   className="flex items-center"
                 >
                   Sign In <ArrowRight className="ml-2 h-5 w-5" />
@@ -135,7 +150,7 @@ const Index = () => {
                 <Button 
                   variant="outline" 
                   size="lg"
-                  onClick={() => handleOpenAuth(true)}
+                  onClick={handleOpenCreateAccount}
                 >
                   Create Account
                 </Button>
@@ -217,7 +232,7 @@ const Index = () => {
               <Button 
                 variant="brand" 
                 size="lg" 
-                onClick={() => handleOpenAuth(false)}
+                onClick={handleOpenSignIn}
               >
                 Sign In Now
               </Button>
@@ -273,14 +288,22 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Authentication Dialog */}
-      <AuthDialog
-        isOpen={authOpen}
-        isSignUp={isSignUp}
-        onOpenChange={handleCloseAuth}
+      {/* Authentication Modals */}
+      <SignInModal
+        isOpen={signInOpen}
+        onClose={() => setSignInOpen(false)}
+        onSignIn={handleSignIn}
         onSocialSignIn={handleSocialSignIn}
-        onFormSubmit={handleFormSubmit}
-        onToggleMode={() => setIsSignUp(!isSignUp)}
+        onToggleToSignUp={handleOpenCreateAccount}
+        onForgotPassword={handleForgotPassword}
+      />
+
+      <CreateAccountModal
+        isOpen={createAccountOpen}
+        onClose={() => setCreateAccountOpen(false)}
+        onSignUp={handleSignUp}
+        onSocialSignIn={handleSocialSignIn}
+        onToggleToSignIn={handleOpenSignIn}
       />
     </div>
   );
