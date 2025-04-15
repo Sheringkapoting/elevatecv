@@ -172,7 +172,28 @@ const Index = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-white p-6 rounded-lg shadow-lg border border-gray-100"
+                whileHover={{ 
+                  scale: 1.05, 
+                  boxShadow: "0px 8px 25px rgba(0, 0, 0, 0.15)",
+                  backgroundColor: "#f8faff",
+                  borderColor: "#c5d9fc"
+                }}
+                className="bg-white p-6 rounded-lg shadow-lg border border-gray-100 transition-all duration-300 hover:z-10"
+                tabIndex={0}
+                role="button"
+                aria-label={`Feature: ${feature.title}`}
+                onFocus={(e) => {
+                  e.currentTarget.style.transform = "scale(1.05)";
+                  e.currentTarget.style.boxShadow = "0px 8px 25px rgba(0, 0, 0, 0.15)";
+                  e.currentTarget.style.backgroundColor = "#f8faff";
+                  e.currentTarget.style.borderColor = "#c5d9fc";
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.transform = "";
+                  e.currentTarget.style.boxShadow = "";
+                  e.currentTarget.style.backgroundColor = "";
+                  e.currentTarget.style.borderColor = "";
+                }}
               >
                 <div className="mb-4">{feature.icon}</div>
                 <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
@@ -214,18 +235,39 @@ const Index = () => {
               Have questions or need support? We're here to help.
             </p>
             <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-8">
-              <div className="text-center">
+              <motion.div 
+                className="text-center p-4 rounded-lg"
+                whileHover={{ 
+                  scale: 1.05, 
+                  boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.1)",
+                  backgroundColor: "#f0f5ff"
+                }}
+              >
                 <h3 className="font-semibold text-lg mb-2">Email Support</h3>
                 <p className="text-brand-600">support@elevatecv.com</p>
-              </div>
-              <div className="text-center">
+              </motion.div>
+              <motion.div 
+                className="text-center p-4 rounded-lg"
+                whileHover={{ 
+                  scale: 1.05, 
+                  boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.1)",
+                  backgroundColor: "#f0f5ff"
+                }}
+              >
                 <h3 className="font-semibold text-lg mb-2">Phone Support</h3>
                 <p className="text-brand-600">+1 (555) 123-4567</p>
-              </div>
-              <div className="text-center">
+              </motion.div>
+              <motion.div 
+                className="text-center p-4 rounded-lg"
+                whileHover={{ 
+                  scale: 1.05, 
+                  boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.1)",
+                  backgroundColor: "#f0f5ff"
+                }}
+              >
                 <h3 className="font-semibold text-lg mb-2">Office Hours</h3>
                 <p className="text-brand-600">Mon-Fri: 9AM - 5PM EST</p>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>

@@ -90,3 +90,29 @@
 .gradient-bg {
   background: linear-gradient(135deg, var(--brand-100) 0%, var(--brand-50) 100%);
 }
+
+/* Hover effect styles */
+.feature-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.feature-card:hover,
+.feature-card:focus {
+  transform: scale(1.05);
+  box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.15);
+  background-color: #f8faff;
+  z-index: 10;
+}
+
+.contact-item {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.contact-item:hover,
+.contact-item:focus {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  background-color: #f0f5ff;
+}
