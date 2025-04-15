@@ -49,19 +49,21 @@ const Index = () => {
 
   const handleSocialSignIn = async (provider: string) => {
     try {
-      const providerKey = provider.toLowerCase() as 'google' | 'linkedin' | 'facebook';
+      // Fix: Convert provider to lowercase and check if it's one of the supported types
+      const providerLower = provider.toLowerCase();
       
-      if (providerKey === 'microsoft') {
+      if (providerLower === 'microsoft') {
         toast.error("Microsoft login is not available right now. It will be made available soon.");
         return;
       }
       
-      if (providerKey === 'facebook') {
+      if (providerLower === 'facebook') {
         toast.error("Facebook login is not available right now. It will be made available soon.");
         return;
       }
       
-      await signInWithProvider(providerKey);
+      // Cast the provider to the type expected by signInWithProvider
+      await signInWithProvider(providerLower as 'google' | 'linkedin' | 'facebook');
     } catch (error) {
       toast.error(`Failed to sign in with ${provider}`);
     }
