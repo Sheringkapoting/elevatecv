@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { ArrowRight, BarChart2, FileText, Shield, PlusCircle } from 'lucide-react';
+import { ArrowRight, BarChart2, FileText, Shield } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import SignInModal from '@/components/auth/SignInModal';
@@ -58,7 +58,6 @@ const Index = () => {
 
   const handleSocialSignIn = async (provider: string) => {
     try {
-      // Convert provider to lowercase and check if it's one of the supported types
       const providerLower = provider.toLowerCase();
       
       if (providerLower === 'microsoft') {
@@ -71,10 +70,8 @@ const Index = () => {
         return;
       }
       
-      // Map LinkedIn provider to the correct OIDC version
       const mappedProvider = providerLower === 'linkedin' ? 'linkedin_oidc' : providerLower;
       
-      // Cast the provider to the type expected by signInWithProvider
       await signInWithProvider(mappedProvider as 'google' | 'linkedin_oidc' | 'facebook');
     } catch (error) {
       toast.error(`Failed to sign in with ${provider}`);
@@ -82,7 +79,6 @@ const Index = () => {
   };
 
   const handleForgotPassword = () => {
-    // Implement forgot password functionality
     toast.info("Forgot password functionality will be implemented soon.");
   };
 
@@ -92,11 +88,6 @@ const Index = () => {
       description: "Get instant feedback on your resume with AI-powered analysis", 
       icon: <BarChart2 className="text-brand-500 h-8 w-8" /> 
     },
-    // { 
-    //   title: "Resume Builder", 
-    //   description: "Build professional resumes with our easy-to-use builder", 
-    //   icon: <PlusCircle className="text-brand-500 h-8 w-8" /> 
-    // },
     { 
       title: "Resume Management", 
       description: "Store and manage all your resumes in one place", 
@@ -111,7 +102,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
       <section className="py-20 bg-gradient-to-r from-brand-50 to-blue-50">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center">
@@ -169,7 +159,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Features Section */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
@@ -218,7 +207,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Sign-In Requirement Section */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
@@ -240,7 +228,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Contact Section */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
@@ -287,7 +274,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Authentication Modals */}
       <SignInModal
         isOpen={signInOpen}
         onClose={() => setSignInOpen(false)}
