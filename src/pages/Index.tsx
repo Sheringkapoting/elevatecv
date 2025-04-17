@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { ArrowRight, BarChart2, FileText, PlusCircle, Shield } from 'lucide-react';
+import { ArrowRight, BarChart2, FileText, Shield, PlusCircle } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import SignInModal from '@/components/auth/SignInModal';
@@ -93,11 +92,11 @@ const Index = () => {
       description: "Get instant feedback on your resume with AI-powered analysis", 
       icon: <BarChart2 className="text-brand-500 h-8 w-8" /> 
     },
-    { 
-      title: "Resume Builder", 
-      description: "Build professional resumes with our easy-to-use builder", 
-      icon: <PlusCircle className="text-brand-500 h-8 w-8" /> 
-    },
+    // { 
+    //   title: "Resume Builder", 
+    //   description: "Build professional resumes with our easy-to-use builder", 
+    //   icon: <PlusCircle className="text-brand-500 h-8 w-8" /> 
+    // },
     { 
       title: "Resume Management", 
       description: "Store and manage all your resumes in one place", 
@@ -179,7 +178,7 @@ const Index = () => {
               Discover how ElevateCV can help you create impressive resumes and improve your job application success rate.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
               <motion.div 
                 key={index}
