@@ -91,12 +91,9 @@
   background: linear-gradient(135deg, var(--brand-100) 0%, var(--brand-50) 100%);
 }
 
-/* Optimized hover effect styles for better performance */
+/* Hover effect styles */
 .feature-card {
-  will-change: transform, box-shadow, background-color;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-  backface-visibility: hidden;
-  -webkit-font-smoothing: subpixel-antialiased;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
 .feature-card:hover,
@@ -108,12 +105,9 @@
 }
 
 .contact-item {
-  will-change: transform, box-shadow, background-color;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
   border-radius: 0.5rem;
   padding: 1rem;
-  backface-visibility: hidden;
-  -webkit-font-smoothing: subpixel-antialiased;
 }
 
 .contact-item:hover,

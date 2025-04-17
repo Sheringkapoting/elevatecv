@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { ArrowRight, BarChart2, FileText, PlusCircle, Shield, Wrench, ChevronRight, Award, RefreshCcw } from 'lucide-react';
+import { ArrowRight, BarChart2, FileText, PlusCircle, Shield } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import SignInModal from '@/components/auth/SignInModal';
@@ -12,7 +12,7 @@ import CreateAccountModal from '@/components/auth/CreateAccountModal';
 const Index = () => {
   const [signInOpen, setSignInOpen] = useState(false);
   const [createAccountOpen, setCreateAccountOpen] = useState(false);
-  const { user, signIn, signUp } = useAuth();
+  const { user, signIn, signUp, signInWithProvider } = useAuth();
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -57,53 +57,56 @@ const Index = () => {
     }
   };
 
+  const handleSocialSignIn = async (provider: string) => {
+    try {
+      // Convert provider to lowercase and check if it's one of the supported types
+      const providerLower = provider.toLowerCase();
+      
+      if (providerLower === 'microsoft') {
+        toast.error("Microsoft login is not available right now. It will be made available soon.");
+        return;
+      }
+      
+      if (providerLower === 'facebook') {
+        toast.error("Facebook login is not available right now. It will be made available soon.");
+        return;
+      }
+      
+      // Map LinkedIn provider to the correct OIDC version
+      const mappedProvider = providerLower === 'linkedin' ? 'linkedin_oidc' : providerLower;
+      
+      // Cast the provider to the type expected by signInWithProvider
+      await signInWithProvider(mappedProvider as 'google' | 'linkedin_oidc' | 'facebook');
+    } catch (error) {
+      toast.error(`Failed to sign in with ${provider}`);
+    }
+  };
+
   const handleForgotPassword = () => {
     // Implement forgot password functionality
     toast.info("Forgot password functionality will be implemented soon.");
   };
 
-  // Enhanced features with added content
   const features = [
     { 
       title: "Resume Analysis", 
-      description: "Get instant feedback on your resume with AI-powered analysis that highlights strengths and improvement areas", 
+      description: "Get instant feedback on your resume with AI-powered analysis", 
       icon: <BarChart2 className="text-brand-500 h-8 w-8" /> 
     },
     { 
       title: "Resume Builder", 
-      description: "Build professional resumes with our intuitive builder featuring industry-specific templates and formats", 
+      description: "Build professional resumes with our easy-to-use builder", 
       icon: <PlusCircle className="text-brand-500 h-8 w-8" /> 
     },
     { 
       title: "Resume Management", 
-      description: "Store, organize, and access all your resumes in one central location with version control features", 
+      description: "Store and manage all your resumes in one place", 
       icon: <FileText className="text-brand-500 h-8 w-8" /> 
     },
     { 
       title: "Secure Storage", 
-      description: "Your resumes are encrypted and securely stored with enterprise-grade protection and privacy guarantees", 
+      description: "Your resumes are securely stored and accessible anytime", 
       icon: <Shield className="text-brand-500 h-8 w-8" /> 
-    },
-    // Added new features for enhanced content
-    { 
-      title: "ATS Optimization", 
-      description: "Ensure your resume passes Applicant Tracking Systems with our specialized keyword optimization tools", 
-      icon: <Wrench className="text-brand-500 h-8 w-8" /> 
-    },
-    { 
-      title: "Industry Insights", 
-      description: "Access data-driven recommendations tailored to your industry and job role for maximum impact", 
-      icon: <ChevronRight className="text-brand-500 h-8 w-8" /> 
-    },
-    { 
-      title: "Achievement Highlighting", 
-      description: "Our smart tools help quantify and showcase your achievements to stand out from other applicants", 
-      icon: <Award className="text-brand-500 h-8 w-8" /> 
-    },
-    { 
-      title: "Continuous Updates", 
-      description: "Keep your resume fresh with automated suggestions for skills updates and industry trends", 
-      icon: <RefreshCcw className="text-brand-500 h-8 w-8" /> 
     },
   ];
 
@@ -182,7 +185,7 @@ const Index = () => {
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
                 whileHover={{ 
                   scale: 1.05, 
@@ -190,7 +193,7 @@ const Index = () => {
                   backgroundColor: "#f8faff",
                   borderColor: "#c5d9fc"
                 }}
-                className="feature-card bg-white p-6 rounded-lg shadow-lg border border-gray-100 transition-all duration-200 hover:z-10"
+                className="bg-white p-6 rounded-lg shadow-lg border border-gray-100 transition-all duration-300 hover:z-10"
                 tabIndex={0}
                 role="button"
                 aria-label={`Feature: ${feature.title}`}
@@ -223,21 +226,15 @@ const Index = () => {
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Sign In Required</h2>
             <p className="text-xl text-gray-600 mb-8">
               To access ElevateCV's full suite of resume building and analysis tools, please sign in with your account.
+              We support Google and LinkedIn authentication for your convenience.
             </p>
-            <div className="flex justify-center gap-4">
+            <div className="flex justify-center">
               <Button 
                 variant="brand" 
                 size="lg" 
                 onClick={handleOpenSignIn}
               >
-                Sign In
-              </Button>
-              <Button 
-                variant="outline" 
-                size="lg"
-                onClick={handleOpenCreateAccount}
-              >
-                Create Account
+                Sign In Now
               </Button>
             </div>
           </div>
@@ -296,6 +293,7 @@ const Index = () => {
         isOpen={signInOpen}
         onClose={() => setSignInOpen(false)}
         onSignIn={handleSignIn}
+        onSocialSignIn={handleSocialSignIn}
         onToggleToSignUp={handleOpenCreateAccount}
         onForgotPassword={handleForgotPassword}
       />
@@ -304,6 +302,7 @@ const Index = () => {
         isOpen={createAccountOpen}
         onClose={() => setCreateAccountOpen(false)}
         onSignUp={handleSignUp}
+        onSocialSignIn={handleSocialSignIn}
         onToggleToSignIn={handleOpenSignIn}
       />
     </div>
@@ -311,4 +310,3 @@ const Index = () => {
 };
 
 export default Index;
-
